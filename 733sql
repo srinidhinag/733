@@ -4,7 +4,7 @@
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0; 
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
@@ -37,10 +37,9 @@ DROP TABLE IF EXISTS testing ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS testing (
-  univ_id INT NOT NULL,
+  univ_id INT NOT NULL DEFAULT 0,
   test_result TINYINT NOT NULL DEFAULT 0,
   test_date DATETIME NULL,
-  UNIQUE INDEX univ_id_UNIQUE (univ_id ASC) VISIBLE,
   PRIMARY KEY (test_result, univ_id))
 ENGINE = InnoDB;
 
@@ -56,8 +55,7 @@ CREATE TABLE IF NOT EXISTS visit_status (
   visit_id INT NOT NULL AUTO_INCREMENT,
   univ_id INT NOT NULL,
   visit_date DATETIME NULL,
-  UNIQUE INDEX univ_id_UNIQUE (univ_id ASC) VISIBLE,
-  PRIMARY KEY (visit_id, univ_id),
+  PRIMARY KEY (visit_id),
   UNIQUE INDEX visit_id_UNIQUE (visit_id ASC) VISIBLE)
 ENGINE = InnoDB;
 
@@ -74,7 +72,6 @@ CREATE TABLE IF NOT EXISTS visited_locations (
   visit_id INT NOT NULL,
   building_id INT NOT NULL,
   PRIMARY KEY (location_visit_id, building_id),
-  UNIQUE INDEX building_id_UNIQUE (building_id ASC) VISIBLE,
   UNIQUE INDEX location_visit_id_UNIQUE (location_visit_id ASC) VISIBLE)
 ENGINE = InnoDB;
 
@@ -137,13 +134,11 @@ DROP TABLE IF EXISTS symptom_check ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS symptom_check (
+  report_id INT  NOT NULL UNIQUE AUTO_INCREMENT,
   univ_id INT NOT NULL,
-  symptom_id INT NOT NULL,
+  symptom_id INT NULL,
   symptom_check_date DATETIME NULL,
-  report_id INT NULL AUTO_INCREMENT,
-  PRIMARY KEY (univ_id),
-  UNIQUE INDEX univ_id_UNIQUE (univ_id ASC) VISIBLE,
-  UNIQUE INDEX report_id_UNIQUE (report_id ASC) VISIBLE)
+  PRIMARY KEY(report_id))
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -378,7 +373,6 @@ INSERT INTO testing (univ_id, test_result, test_date) VALUES (97, 0, '2021-04-17
 INSERT INTO testing (univ_id, test_result, test_date) VALUES (98, 0, '2021-04-30 14:00:00');
 INSERT INTO testing (univ_id, test_result, test_date) VALUES (99, 0, '2021-04-30 16:00:00');
 INSERT INTO testing (univ_id, test_result, test_date) VALUES (100, 1, '2021-05-05 14:45:00');
-INSERT INTO testing (univ_id, test_result, test_date) VALUES (DEFAULT, DEFAULT, '');
 
 COMMIT;
 
@@ -386,109 +380,22 @@ COMMIT;
 -- -----------------------------------------------------
 -- Data for table visit_status
 -- -----------------------------------------------------
-START TRANSACTION;
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (001, 01, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 02, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (002, 03, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 04, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 05, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 06, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 07, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 08, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 09, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 10, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 11, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 12, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 13, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 14, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 15, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 16, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 17, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 18, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (003, 19, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 20, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 21, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 22, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 23, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 24, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 25, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 26, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 27, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 28, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 29, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 30, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 31, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 32, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 33, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 34, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 35, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 36, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 37, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 38, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 39, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 40, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 41, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 42, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 43, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 44, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 45, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 46, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 47, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 48, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 49, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 50, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 51, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 52, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 53, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 54, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 55, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 56, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 57, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 58, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 59, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 60, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 61, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 62, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 63, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 64, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 65, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 66, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 67, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 68, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 69, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 70, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 71, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 72, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 73, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 74, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 75, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 76, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 77, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 78, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 79, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 80, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 81, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 82, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 83, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 84, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 85, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 86, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 87, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 88, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 89, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 90, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 91, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 92, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 93, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 94, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 95, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (004, 96, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 97, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 98, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (DEFAULT, 99, NULL);
-INSERT INTO visit_status (visit_id, univ_id, visit_date) VALUES (005, 100, NULL);
+START TRANSACTION; 
+INSERT INTO visit_status (univ_id, visit_date) VALUES (06, '2021-03-29 20:43:23');
+INSERT INTO visit_status (univ_id, visit_date) VALUES (13, '2021-05-02 10:30:45');
+INSERT INTO visit_status (univ_id, visit_date) VALUES (26, '2021-02-23 12:32:23');
+INSERT INTO visit_status (univ_id, visit_date) VALUES (26, '2021-02-24 12:22:30');
+INSERT INTO visit_status (univ_id, visit_date) VALUES (27, '2021-03-29 15:43:34');
+INSERT INTO visit_status (univ_id, visit_date) VALUES (32, '2021-04-30 12:12:43');
+INSERT INTO visit_status (univ_id, visit_date) VALUES (32, '2021-05-01 13:34:40');
+INSERT INTO visit_status (univ_id, visit_date) VALUES (32, '2021-05-03 13:43:02');
+INSERT INTO visit_status (univ_id, visit_date) VALUES (57, '2021-02-23 07:45:34');
+INSERT INTO visit_status (univ_id, visit_date) VALUES (65, '2021-03-23 07:32:45');
+INSERT INTO visit_status (univ_id, visit_date) VALUES (100, '2021-05-03 16:34:32');
+INSERT INTO visit_status (univ_id, visit_date) VALUES (100, '2021-05-04 16:12:35');
 
 COMMIT;
+
 
 
 -- -----------------------------------------------------
@@ -510,9 +417,9 @@ COMMIT;
 -- Data for table voluntarily_disclosed_close_contacts
 -- -----------------------------------------------------
 START TRANSACTION;
-INSERT INTO voluntarily_disclosed_close_contacts (univ_id, contact_first_name, contact_last_name, contact_date, contact_email) VALUES (10, 'Jamal', 'Jeffries', '05/02/2021', 'jjeff@gmail.com');
-INSERT INTO voluntarily_disclosed_close_contacts (univ_id, contact_first_name, contact_last_name, contact_date, contact_email) VALUES (69, 'Harrison', 'Kinder', '04/26/2021', 'kinder@umd.edu');
-INSERT INTO voluntarily_disclosed_close_contacts (univ_id, contact_first_name, contact_last_name, contact_date, contact_email) VALUES (100, 'Katie', 'Kinder', '04/29/2021', 'kkin@gmail.com');
+INSERT INTO voluntarily_disclosed_close_contacts (univ_id, contact_first_name, contact_last_name, contact_date, contact_email) VALUES (10, 'Jamal', 'Jeffries', '2021-05-02 10:43:23', 'jjeff@gmail.com');
+INSERT INTO voluntarily_disclosed_close_contacts (univ_id, contact_first_name, contact_last_name, contact_date, contact_email) VALUES (69, 'Harrison', 'Kinder', '2021-04-26 19:42;02', 'kinder@umd.edu');
+INSERT INTO voluntarily_disclosed_close_contacts (univ_id, contact_first_name, contact_last_name, contact_date, contact_email) VALUES (100, 'Katie', 'Kinder', '2021-04-29 20:43:09', 'kkin@gmail.com');
 
 COMMIT;
 
@@ -540,48 +447,48 @@ COMMIT;
 -- Data for table vaccination
 -- -----------------------------------------------------
 START TRANSACTION;
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (01, DEFAULT, '1', '', NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (02, DEFAULT, '2', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (03, DEFAULT, '3', NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (01, DEFAULT, '1', '2021-02-23 10:30:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (02, DEFAULT, '2', '2021-04-01 10:45:00', '2021-04-30 15:15:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (03, DEFAULT, '3', '2021-05-05 13:15:00', NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (04, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (05, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (06, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (07, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (08, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (09, DEFAULT, NULL, NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (10, DEFAULT, '1', NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (10, DEFAULT, '1', '2021-04-30 19:45:00', NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (11, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (12, DEFAULT, NULL, NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (13, DEFAULT, '3', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (14, DEFAULT, '3', NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (13, DEFAULT, '3', '2021-05-01 15:45:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (14, DEFAULT, '3', '2021-05-01 11:55:00', NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (15, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (16, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (17, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (18, DEFAULT, NULL, NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (19, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (20, DEFAULT, '1', NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (19, DEFAULT, '1', '2021-02-23 13:05:00', '2021-03-20 13:55:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (20, DEFAULT, '1', '2021-04-29 10:45:00', NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (21, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (22, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (23, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (24, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (25, DEFAULT, NULL, NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (26, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (27, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (28, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (29, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (30, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (31, DEFAULT, '2', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (32, DEFAULT, '2', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (33, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (34, DEFAULT, '2', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (35, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (36, DEFAULT, '2', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (37, DEFAULT, '2', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (38, DEFAULT, '2', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (39, DEFAULT, '2', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (40, DEFAULT, '2', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (41, DEFAULT, '2', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (42, DEFAULT, '1', NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (26, DEFAULT, '1', '2021-05-03 14:45:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (27, DEFAULT, '1', '2021-05-03 13:35:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (28, DEFAULT, '1', '2021-01-30 14:25:00', '2021-02-03 13;45:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (29, DEFAULT, '1', '2021-04-29 14:55:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (30, DEFAULT, '1', '2021-04-01 12:45:00', '2021-05-03 14:55:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (31, DEFAULT, '2', '2021-05-05 08:05:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (32, DEFAULT, '2', '2021-04-02 10:00:00', '2021-05-05 05:35:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (33, DEFAULT, '1', '2021-05-05 10:00:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (34, DEFAULT, '2', '2021-04-28 15:45:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (35, DEFAULT, '1', '2021-04-28 14:55:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (36, DEFAULT, '2', '2021-03-28 10:30:00', '2021-04-30 13:45:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (37, DEFAULT, '2', '2021-05-03 15:55:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (38, DEFAULT, '2', '2021-04-20 15:15:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (39, DEFAULT, '2', '2021-04-29 14:40:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (40, DEFAULT, '2', '2021-04-30 16:25:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (41, DEFAULT, '2', '2020-12-23 14:45:00', '2021-01-29 15:54:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (42, DEFAULT, '1', '2021-05-05 10:45:00', NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (43, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (44, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (45, DEFAULT, NULL, NULL, NULL);
@@ -589,15 +496,15 @@ INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dos
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (47, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (48, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (49, DEFAULT, NULL, NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (50, DEFAULT, '2', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (51, DEFAULT, '2', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (52, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (53, DEFAULT, '1', NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (50, DEFAULT, '2', '2021-05-04 12:40:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (51, DEFAULT, '2', '2021-05-04 13:30:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (52, DEFAULT, '1', '2021-03-23 10:00:00', '2021-04-20 14:30:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (53, DEFAULT, '1', '2021-05-03 10:00:00', NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (54, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (55, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (56, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (57, DEFAULT, NULL, NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (58, DEFAULT, '2', NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (58, DEFAULT, '2', '2021-04-26 15:50:00', NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (59, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (60, DEFAULT, '2', NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (61, DEFAULT, '2', NULL, NULL);
@@ -619,27 +526,27 @@ INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dos
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (77, DEFAULT, '1', NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (78, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (79, DEFAULT, NULL, NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (80, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (81, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (82, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (83, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (84, DEFAULT, '1', NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (80, DEFAULT, '3', '2021-03-12 14:40:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (81, DEFAULT, '3', '2021-03-26 10:30:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (82, DEFAULT, '1', '2021-04-21 15:50:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (83, DEFAULT, '1', '2021-04-25 08:50:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (84, DEFAULT, '1', '2021-04-23 10:30:00', NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (85, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (86, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (87, DEFAULT, NULL, NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (88, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (89, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (90, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (91, DEFAULT, '1', NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (88, DEFAULT, '3', '2021-04-13 10:00:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (89, DEFAULT, '1', '2021-04-02 10:15:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (90, DEFAULT, '1', '2021-05-01 14:45:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (91, DEFAULT, '1', '2021-02-25 16:40:00', NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (92, DEFAULT, NULL, NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (93, DEFAULT, '3', NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (93, DEFAULT, '3', '2021-05-05 16:30:00', NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (94, DEFAULT, NULL, NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (95, DEFAULT, '2', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (96, DEFAULT, '1', NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (97, DEFAULT, '2', NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (95, DEFAULT, '2', '2021-05-01 15:20:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (96, DEFAULT, '1', '2021-04-30 10:20:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (97, DEFAULT, '2', '2021-03-14 14:15:00', '2021-04-21 14:45:00');
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (98, DEFAULT, NULL, NULL, NULL);
 INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (99, DEFAULT, NULL, NULL, NULL);
-INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (100, DEFAULT, '1', NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (100, DEFAULT, '1', '2021-05-02 10:45:00', NULL);
 
 COMMIT;
 
@@ -648,105 +555,13 @@ COMMIT;
 -- Data for table symptom_check
 -- -----------------------------------------------------
 START TRANSACTION;
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (01, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (02, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (03, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (04, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (05, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (06, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (07, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (08, 10, '2021-05-02 15:25:42', 01);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (09, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (13, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (14, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (15, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (16, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (17, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (18, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (19, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (20, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (21, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (22, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (23, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (24, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (25, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (26, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (27, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (28, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (29, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (30, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (31, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (32, 4, '2021-04-29 12:35:02', 02);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (33, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (34, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (35, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (36, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (37, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (38, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (39, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (40, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (41, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (42, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (43, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (44, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (45, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (46, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (47, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (48, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (49, 6, '2021-03-02 01:12:59', 03);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (50, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (51, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (52, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (53, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (54, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (55, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (56, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (57, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (58, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (59, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (60, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (61, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (62, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (63, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (64, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (65, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (66, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (67, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (68, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (69, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (70, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (71, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (72, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (73, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (74, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (75, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (76, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (77, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (78, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (79, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (80, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (81, 10, '2021-03-20 11:45:02', 04);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (82, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (83, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (84, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (85, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (86, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (87, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (88, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (89, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (90, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (91, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (92, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (93, 11, '2021-01-03 12:34:04', 05);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (94, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (95, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (96, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (97, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (98, DEFAULT, NULL, NULL);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (99, 2, '2021-03-07 22:04:49', 06);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (100, 1, '2021-04-30 12:42:05', 07);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (100, 3, '2021-04-30 19:30:50', 07);
-INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date, report_id) VALUES (100, 2, '2021-04-30 11:24:50', 07);
+INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date) VALUES (49, 6, '2021-03-02 01:12:59');
+INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date) VALUES (81, 10, '2021-03-20 11:45:02');
+INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date) VALUES (93, 11, '2021-01-03 12:34:04');
+INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date) VALUES (99, 2, '2021-03-07 22:04:49');
+INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date) VALUES (100, 1, '2021-04-30 12:42:05');
+INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date) VALUES (100, 3, '2021-04-30 19:30:50');
+INSERT INTO symptom_check (univ_id, symptom_id, symptom_check_date) VALUES (100, 2, '2021-04-30 11:24:50');
 
 COMMIT;
 
@@ -755,7 +570,7 @@ COMMIT;
 -- Data for table buildings
 -- -----------------------------------------------------
 START TRANSACTION;
-INSERT INTO buildings (building_id, building_name) VALUES (im, 'iribe');
+INSERT INTO buildings (building_id, building_name) VALUES (01, 'iribe');
 INSERT INTO buildings (building_id, building_name) VALUES (02, 'school_of_public_health');
 INSERT INTO buildings (building_id, building_name) VALUES (03, 'stamp');
 INSERT INTO buildings (building_id, building_name) VALUES (04, 'mitchell');
@@ -767,4 +582,5 @@ INSERT INTO buildings (building_id, building_name) VALUES (09, 'potomac');
 INSERT INTO buildings (building_id, building_name) VALUES (10, 'biology_psychology');
 
 COMMIT;
+
 
