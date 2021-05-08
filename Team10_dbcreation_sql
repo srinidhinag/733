@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS person (
   first_name VARCHAR(45) NOT NULL,
   affiliation TINYINT NOT NULL DEFAULT 0,
   training_status TINYINT NOT NULL DEFAULT 0,
-  training_completion_date DATETIME NOT NULL,
+  training_completion_date DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (univ_id))
 ENGINE = InnoDB;
 
@@ -134,9 +134,6 @@ SHOW WARNINGS;
 CREATE UNIQUE INDEX report_id_UNIQUE ON symptom_check_report (report_id ASC) VISIBLE;
 
 SHOW WARNINGS;
-CREATE UNIQUE INDEX univ_id_UNIQUE ON symptom_check_report (univ_id ASC) VISIBLE;
-
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table symptoms
@@ -165,10 +162,10 @@ DROP TABLE IF EXISTS testing ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS testing (
-  testing_id INT NOT NULL AUTO_INCREMENT,
-  univ_id INT NOT NULL,
+   univ_id INT NOT NULL,
   test_result VARCHAR(45) BINARY NOT NULL,
   test_date DATETIME NOT NULL,
+testing_id INT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (testing_id, univ_id),
   CONSTRAINT
     FOREIGN KEY (univ_id)
@@ -212,7 +209,7 @@ DROP TABLE IF EXISTS visit_status ;
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS visit_status (
   univ_id INT NOT NULL,
-  visited_campus VARCHAR(45) BINARY NOT NULL,
+  visited_campus TINYINT NOT NULL DEFAULT 0,
   visit_id INT NOT NULL AUTO_INCREMENT,
   visit_date DATETIME NULL,
   PRIMARY KEY (visit_id, univ_id),
@@ -222,9 +219,6 @@ CREATE TABLE IF NOT EXISTS visit_status (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-SHOW WARNINGS;
-CREATE UNIQUE INDEX univ_id_UNIQUE ON visit_status (univ_id ASC) VISIBLE;
 
 SHOW WARNINGS;
 CREATE UNIQUE INDEX visit_id_UNIQUE ON visit_status (visit_id ASC) VISIBLE;
@@ -241,12 +235,12 @@ CREATE TABLE IF NOT EXISTS visited_locations (
   visit_id INT NOT NULL,
   building_id INT NOT NULL,
   PRIMARY KEY (visit_id, building_id),
-  CONSTRAINT visit_id
+  CONSTRAINT
     FOREIGN KEY (visit_id)
     REFERENCES visit_status (visit_id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT building_id
+  CONSTRAINT
     FOREIGN KEY (building_id)
     REFERENCES buildings (building_id)
     ON DELETE NO ACTION
@@ -257,10 +251,460 @@ SHOW WARNINGS;
 CREATE UNIQUE INDEX visit_id_UNIQUE ON visited_locations (visit_id ASC) VISIBLE;
 
 SHOW WARNINGS;
-CREATE UNIQUE INDEX building_id_UNIQUE ON visited_locations (building_id ASC) VISIBLE;
+/*CREATE UNIQUE INDEX building_id_UNIQUE ON visited_locations (building_id ASC) VISIBLE;*/
 
 SHOW WARNINGS;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (01, 'nag', 'srinidhi', 0, 1, '2020-09-15 12:45:45');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (02, 'zewolde', 'tsion', 0, 1, '2020-09-01 10:00:04');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (03, 'smith', 'barbara', 0, 1, '2020-12-04 06:03:50');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (04, 'jones', 'dustin', 0, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (05, 'jones', 'james', 0, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (06, 'gold', 'robert', 1, 1, '2021-02-14 10:58:00');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (07, 'james', 'samantha', 0, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (08, 'roberts', 'kevin', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (09, 'jeffries', 'jamal', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (10, 'patel', 'kareena', 0, 1, '2020-09-20 15:34:59');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (11, 'hufker', 'kurt', 1, 1, '2020-10-10 14:54:01');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (12, 'hildreth', 'michael', 1, 1, '2020-09-01 06:30:23');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (13, 'jameson', 'phillip', 0, 1, '2020-08-01 15:45:04');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (14, 'kinder', 'samantha', 1, 1, '2020-08-14 13:05:32');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (15, 'aston', 'martin', 0, 1, '2020-08-15 12:46:47');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (16, 'dcosta', 'allison', 1, 1, '2020-08-30 19:27:04');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (17, 'riley', 'emma', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (18, 'kumar', 'saahil', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (19, 'mathur', 'priya', 0, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (20, 'brown', 'kenya', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (21, 'jackson', 'jamal', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (22, 'randall', 'steven', 0, 1, '2020-08-15 19:39:04');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (23, 'king', 'elizabeth', 0, 1, '2020-08-30 20:40:32');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (24, 'catron', 'jonathan', 1, 1, '2020-08-30 22:39:47');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (25, 'neil', 'patrick', 0, 1, '2020-08-29 15:45:03');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (26, 'schwinn', 'summer', 0, 1, '2020-08-18 21:49:39');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (27, 'alba', 'francesca', 0, 1, '2020-08-18 21:00:03');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (28, 'rodriguez', 'julio', 0, 1, '2020-12-05 23:39:39');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (29, 'zuko', 'christopher', 1, 1, '2021-02-26 10:32:32');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (30, 'mitchells', 'jennifer', 1, 1, '2020-10-12 19:30:48');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (31, 'jiminez', 'pablo', 0, 1, '2020-11-01 12:30:34');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (32, 'caesar', 'randall', 1, 1, '2020-10-31 12:43:23');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (33, 'fisher', 'jade', 0, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (34, 'kings', 'lana', 0, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (35, 'pire', 'stephen', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (36, 'prior', 'christopher', 1, 1, '2020-12-23 08:30:09');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (37, 'prior', 'kaitlyn', 1, 1, '2020-11-10 19:58:03');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (38, 'prior', 'callie', 1, 1, '2020-08-30 11:23:49');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (39, 'feels', 'jefferson', 1, 1, '2020-09-05 10:59:09');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (40, 'modie', 'william', 0, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (41, 'khan', 'sabrina', 0, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (42, 'khan', 'ayesha', 0, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (43, 'henderson', 'jill', 0, 1, '2020-08-23 17:48:30');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (44, 'brown', 'kendall', 0, 1, '2020-09-02 16:04:03');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (45, 'bing', 'chandler', 0, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (46, 'brinsley', 'pete', 1, 1, '2020-08-17 09:04:49');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (47, 'kinsley', 'patricia', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (48, 'kens', 'vivian', 1, 1, '2020-12-19 10:45:38');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (49, 'mathur', 'saahil', 0, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (50, 'xi', 'courtney', 0, 1, '2020-08-14 10:34:38');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (51, 'xin', 'lee', 0, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (52, 'yang', 'christina', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (53, 'hu', 'michelle', 0, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (54, 'hernandez', 'brittany', 0, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (55, 'spock', 'darryl', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (56, 'vian', 'rina', 0, 1, '2020-08-10 16:38:02');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (57, 'kell', 'cindy', 0, 1, '2020-08-19 18:39:09');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (58, 'mitt', 'john', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (59, 'cranston', 'whitney', 0, 1, '2020-08-02 19:09:39');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (60, 'bendares', 'timothy', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (61, 'neal', 'christian', 1, 1, '2020-08-10 10:48:29');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (62, 'harris', 'christina', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (63, 'friedman', 'lee', 0, 1, '2020-09-19 04:20:20');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (64, 'freedman', 'jeffrey', 0, 1, '2020-09-01 19:37:01');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (65, 'pollock', 'jackson', 0, 1, '2020-09-10 17:37:03');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (66, 'max', 'peter', 0, 1, '2020-08-01 18:10:09');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (67, 'stevens', 'isabelle', 0, 1, '2020-08-27 19:48:03');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (68, 'stephen', 'peter', 1, 1, '2020-08-26 12:01:48');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (69, 'drale', 'geoffrey', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (70, 'monica', 'lauren', 1, 1, '2021-01-02 08:12:19');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (71, 'montalto', 'joseph', 1, 1, '2020-11-19 17:59:04');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (72, 'dcosta', 'amber', 1, 1, '2020-08-18 05:34:03');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (73, 'henries', 'samuel', 1, 1, '2020-08-18 03:29:20');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (74, 'ring', 'nia', 1, 1, '2020-08-18 12:45:40');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (75, 'lin', 'peter', 1, 1, '2020-08-19 20:59:30');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (76, 'agrawal', 'neal', 1, 1, '2020-09-04 19:58:03');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (77, 'agarwal', 'anjali', 1, 1, '2020-10-30 01:11:49');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (78, 'kim', 'evan', 1, 1, '2020-10-01 18:48:30');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (79, 'skinner', 'ashley', 1, 1, '2020-08-29 10:45:10');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (80, 'omalley', 'harris', 0, 1, '2020-08-19 23:23:50');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (81, 'dsouza', 'trina', 0, 1, '2020-08-19 06:49:20');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (82, 'ivies', 'kira', 1, DEFAULT, DEFAULT);
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (83, 'yu', 'phyllis', 0, 1, '2020-10-20 07:45:39');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (84, 'stinger', 'kendall', 0, 1, '2020-08-19 07:45:09');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (85, 'lynol', 'tucker', 0, 1, '2020-08-13 17:08:00');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (86, 'quin', 'judy', 1, 1, '2020-09-01 15:01:00');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (87, 'zelle', 'sam', 1, 1, '2020-08-18 00:12:03');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (88, 'brandon', 'cameron', 1, 1, '2020-08-21 00:49:53');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (89, 'john', 'robin', 1, 1, '2020-08-30 12:23:54');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (90, 'brent', 'christian', 1, 1, '2020-08-17 22:10:59');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (91, 'hamilton', 'william', 1, 1, '2020-09-10 15:56:49');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (92, 'sherman', 'carol', 1, 1, '2021-01-23 00:12:40');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (93, 'kines', 'lindsey', 0, 1, '2020-09-01 12:32:54');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (94, 'frills', 'frederick', 0, 1, '2020-08-21 12:21:30');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (95, 'tarins', 'mona', 0, 1, '2020-08-01 12:00:34');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (96, 'sloan', 'tyler', 1, 1, '2020-08-01 08:34:49');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (97, 'shepherd', 'mark', 1, 1, '2020-10-04 10:30:34');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (98, 'rawlin', 'lionel', 0, 1, '2020-10-19 23:00:39');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (99, 'ming', 'richard', 0, 1, '2020-08-01 13:34:30');
+INSERT INTO person (univ_id, last_name, first_name, affiliation, training_status, training_completion_date) VALUES (100, 'prince', 'hannah', 1, 1, '2021-02-28 01:34:03');
+
+COMMIT;
+
+START TRANSACTION;
+USE 4umd;
+INSERT INTO symptoms (symptom_name, symptom_id) VALUES ('trouble_breathing', 1);
+INSERT INTO symptoms (symptom_name, symptom_id) VALUES ('temp_100', 2);
+INSERT INTO symptoms (symptom_name, symptom_id) VALUES ('chills', 3);
+INSERT INTO symptoms (symptom_name, symptom_id) VALUES ('new_onset_cough', 4);
+INSERT INTO symptoms (symptom_name, symptom_id) VALUES ('sore_throat', 5);
+INSERT INTO symptoms (symptom_name, symptom_id) VALUES ('headache', 6);
+INSERT INTO symptoms (symptom_name, symptom_id) VALUES ('taste_smell_loss', 7);
+INSERT INTO symptoms (symptom_name, symptom_id) VALUES ('nausea_vomiting', 8);
+INSERT INTO symptoms (symptom_name, symptom_id) VALUES ('muscle_body_aches', 9);
+INSERT INTO symptoms (symptom_name, symptom_id) VALUES ('excessive_fatigue', 10);
+INSERT INTO symptoms (symptom_name, symptom_id) VALUES ('diarrhea', 11);
+
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table vaccination
+-- -----------------------------------------------------
+START TRANSACTION;
+USE 4umd;
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (01, DEFAULT, '1', '2021-02-23 10:30:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (02, DEFAULT, '2', '2021-04-01 10:45:00', '2021-04-30 15:15:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (03, DEFAULT, '3', '2021-05-05 13:15:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (04, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (05, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (06, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (07, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (08, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (09, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (10, DEFAULT, '1', '2021-04-30 19:45:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (11, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (12, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (13, DEFAULT, '3', '2021-05-01 15:45:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (14, DEFAULT, '3', '2021-05-01 11:55:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (15, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (16, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (17, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (18, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (19, DEFAULT, '1', '2021-02-23 13:05:00', '2021-03-20 13:55:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (20, DEFAULT, '1', '2021-04-29 10:45:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (21, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (22, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (23, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (24, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (25, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (26, DEFAULT, '1', '2021-05-03 14:45:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (27, DEFAULT, '1', '2021-05-03 13:35:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (28, DEFAULT, '1', '2021-01-30 14:25:00', '2021-02-03 13;45:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (29, DEFAULT, '1', '2021-04-29 14:55:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (30, DEFAULT, '1', '2021-04-01 12:45:00', '2021-05-03 14:55:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (31, DEFAULT, '2', '2021-05-05 08:05:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (32, DEFAULT, '2', '2021-04-02 10:00:00', '2021-05-05 05:35:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (33, DEFAULT, '1', '2021-05-05 10:00:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (34, DEFAULT, '2', '2021-04-28 15:45:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (35, DEFAULT, '1', '2021-04-28 14:55:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (36, DEFAULT, '2', '2021-03-28 10:30:00', '2021-04-30 13:45:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (37, DEFAULT, '2', '2021-05-03 15:55:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (38, DEFAULT, '2', '2021-04-20 15:15:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (39, DEFAULT, '2', '2021-04-29 14:40:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (40, DEFAULT, '2', '2021-04-30 16:25:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (41, DEFAULT, '2', '2020-12-23 14:45:00', '2021-01-29 15:54:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (42, DEFAULT, '1', '2021-05-05 10:45:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (43, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (44, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (45, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (46, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (47, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (48, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (49, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (50, DEFAULT, '2', '2021-05-04 12:40:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (51, DEFAULT, '2', '2021-05-04 13:30:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (52, DEFAULT, '1', '2021-03-23 10:00:00', '2021-04-20 14:30:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (53, DEFAULT, '1', '2021-05-03 10:00:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (54, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (55, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (56, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (57, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (58, DEFAULT, '2', '2021-04-26 15:50:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (59, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (60, DEFAULT, '2', '2021-01-10 10:30:00', '2021-02-07 11:45:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (61, DEFAULT, '2', '2021-05-06 15:00:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (62, DEFAULT, '2', '2021-05-06 12:30:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (63, DEFAULT, '2', '2021-05-06 10:30:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (64, DEFAULT, '1', NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (65, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (66, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (67, DEFAULT, '2', '2021-05-01 10:30:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (68, DEFAULT, '1', '2021-05-05 15:00:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (69, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (70, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (71, DEFAULT, '1', '2021-05-01 16:00:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (72, DEFAULT, '2', '2021-04-18 11:40:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (73, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (74, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (75, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (76, DEFAULT, '1', '2021-03-30 10:30:00', '2021-04-25 16:00:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (77, DEFAULT, '3', '2021-03-03 10:30:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (78, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (79, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (80, DEFAULT, '3', '2021-03-12 14:40:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (81, DEFAULT, '3', '2021-03-26 10:30:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (82, DEFAULT, '1', '2021-04-21 15:50:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (83, DEFAULT, '1', '2021-04-25 08:50:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (84, DEFAULT, '1', '2021-04-23 10:30:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (85, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (86, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (87, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (88, DEFAULT, '3', '2021-04-13 10:00:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (89, DEFAULT, '1', '2021-04-02 10:15:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (90, DEFAULT, '1', '2021-05-01 14:45:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (91, DEFAULT, '1', '2021-02-25 16:40:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (92, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (93, DEFAULT, '3', '2021-05-05 16:30:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (94, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (95, DEFAULT, '2', '2021-05-01 15:20:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (96, DEFAULT, '1', '2021-04-30 10:20:00', NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (97, DEFAULT, '2', '2021-03-14 14:15:00', '2021-04-21 14:45:00');
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (98, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (99, DEFAULT, NULL, NULL, NULL);
+INSERT INTO vaccination (univ_id, vaccinated, vaccination_type, dose_1_date, dose_2_date) VALUES (100, DEFAULT, '1', '2021-05-02 10:45:00', NULL);
+
+COMMIT;
+
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (01, 0, '2021-05-02 10:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (02, 0, '2021-03-30 12:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (03, 0, '2021-04-29 16:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (04, 0, '2021-04-10 09:30:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (05, 0, '2021-05-01 16:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (06, 0, '2021-01-21 12:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (07, 0, '2021-05-02 13:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (08, 0, '2021-05-02 13:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (09, 0, '2021-05-03 16:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (10, 0, '2021-05-03 11:30:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (11, 0, '2021-04-20 09:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (12, 1, '2021-04-08 14:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (13, 0, '2021-04-20 14:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (14, 0, '2021-05-01 15:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (15, 0, '2021-04-20 10:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (16, 0, '2021-05-01 10:30:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (17, 0, '2021-04-20 09:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (18, 1, '2021-04-29 11:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (19, 0, '2021-04-29 11:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (20, 0, '2021-03-30 12:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (21, 0, '2021-02-26 16:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (22, 0, '2021-04-23 11:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (23, 0, '2021-02-01 15:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (24, 0, '2021-04-20 11:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (25, 0, '2021-05-02 09:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (26, 1, '2021-05-02 11:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (27, 0, '2021-04-20 11:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (28, 0, '2021-04-21 11:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (29, 0, '2021-05-02 15:30:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (30, 0, '2021-05-03 13:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (31, 0, '2021-05-05 14:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (32, 0, '2021-04-30 12:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (33, 0, '2021-04-30 12:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (34, 0, '2021-04-26 15:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (35, 0, '2021-03-29 14:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (36, 0, '2021-04-19 12:30:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (37, 0, '2021-05-01 14:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (38, 0, '2021-04-04 10:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (39, 0, '2021-05-05 10:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (40, 0, '2021-04-29 10:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (41, 0, '2021-04-02 13:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (42, 0, '2021-05-05 12:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (43, 0, '2021-03-29 10:30:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (44, 1, '2021-04-30 12:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (45, 0, '2021-01-05 12:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (46, 0, '2021-04-14 09:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (47, 0, '2021-05-03 13:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (48, 0, '2021-04-29 14:30:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (49, 0, '2021-05-03 09:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (50, 0, '2021-05-02 15:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (51, 1, '2021-05-03 12:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (52, 1, '2021-05-03 12:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (53, 1, '2021-05-02 14:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (54, 0, '2021-05-04 13:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (55, 0, '2021-04-21 14:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (56, 0, '2021-04-24 12:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (57, 0, '2021-04-28 01:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (58, 0, '2021-03-31 11:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (59, 0, '2021-04-21 15:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (60, 0, '3031-05-04 12:30:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (61, 0, '2021-04-23 12:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (62, 0, '2021-05-01 14:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (63, 1, '2021-04-28 15:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (64, 1, '2021-04-28 15:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (65, 0, '2021-04-25 16:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (66, 0, '2021-05-30 14:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (67, 0, '2021-05-02 01:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (68, 0, '2021-05-05 10:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (69, 0, '2021-04-29 10:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (70, 0, '2021-05-02 09:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (71, 0, '2021-05-05 12:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (72, 0, '2021-04-30 14:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (63, 0, '2021-04-30 14:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (64, 0, '2021-04-28 14:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (75, 0, '2021-04-30 14:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (76, 0, '2021-05-04 11:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (77, 0, '2021-05-02 11:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (78, 1, '2021-05-01 15:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (79, 1, '2021-04-04 13:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (80, 1, '2021-04-30 14:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (81, 1, '2021-02-04 14:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (82, 1, '2021-05-05 12:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (83, 1, '2021-05-01 10:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (84, 1, '2021-05-02 15:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (85, 0, '2021-04-30 16:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (86, 0, '2021-05-03 09:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (87, 0, '2021-05-04 12:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (88, 0, '2021-05-03 14:30:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (89, 0, '2021-05-04 13:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (90, 0, '2021-04-27 12:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (91, 0, '2021-04-27 12:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (92, 0, '2021-04-30 14:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (93, 0, '2021-04-30 11:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (94, 0, '2021-04-28 15:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (95, 0, '2021-04-26 15:45:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (96, 0, '2021-04-27 12:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (97, 0, '2021-04-17 13:15:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (98, 0, '2021-04-30 14:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (99, 0, '2021-04-30 16:00:00');
+INSERT INTO testing (univ_id, test_result, test_date) VALUES (100, 1, '2021-05-05 14:45:00');
+
+COMMIT;
+
+START TRANSACTION;
+INSERT INTO buildings (building_id, building_name) VALUES (01, 'iribe');
+INSERT INTO buildings (building_id, building_name) VALUES (02, 'school_of_public_health');
+INSERT INTO buildings (building_id, building_name) VALUES (03, 'stamp');
+INSERT INTO buildings (building_id, building_name) VALUES (04, 'mitchell');
+INSERT INTO buildings (building_id, building_name) VALUES (05, 'benjamin');
+INSERT INTO buildings (building_id, building_name) VALUES (06, 'jimenez');
+INSERT INTO buildings (building_id, building_name) VALUES (07, 'mckeldin');
+INSERT INTO buildings (building_id, building_name) VALUES (08, 'hornbake');
+INSERT INTO buildings (building_id, building_name) VALUES (09, 'potomac');
+INSERT INTO buildings (building_id, building_name) VALUES (10, 'biology_psychology');
+
+COMMIT;
+
+START TRANSACTION; 
+INSERT INTO visit_status (univ_id, visited_campus, visit_date) VALUES (06, 1, '2021-03-29 20:43:23');
+INSERT INTO visit_status (univ_id, visited_campus, visit_date) VALUES (13, 1, '2021-05-02 10:30:45');
+INSERT INTO visit_status (univ_id, visited_campus, visit_date) VALUES (26, 1, '2021-02-23 12:32:23');
+INSERT INTO visit_status (univ_id, visited_campus, visit_date) VALUES (26, 1, '2021-02-24 12:22:30');
+INSERT INTO visit_status (univ_id, visited_campus, visit_date) VALUES (27, 1, '2021-03-29 15:43:34');
+INSERT INTO visit_status (univ_id, visited_campus, visit_date) VALUES (32, 1, '2021-04-30 12:12:43');
+INSERT INTO visit_status (univ_id, visited_campus, visit_date) VALUES (32, 1, '2021-05-01 13:34:40');
+INSERT INTO visit_status (univ_id, visited_campus, visit_date) VALUES (32, 1, '2021-05-03 13:43:02');
+INSERT INTO visit_status (univ_id, visited_campus, visit_date) VALUES (57, 1, '2021-02-23 07:45:34');
+INSERT INTO visit_status (univ_id, visited_campus, visit_date) VALUES (65, 1, '2021-03-23 07:32:45');
+INSERT INTO visit_status (univ_id, visited_campus, visit_date) VALUES (100, 1, '2021-05-03 16:34:32');
+INSERT INTO visit_status (univ_id, visited_campus, visit_date) VALUES (100, 1, '2021-05-04 16:12:35');
+
+COMMIT;
+
+
+START TRANSACTION;
+INSERT INTO visited_locations (visit_id, building_id) VALUES (001, 01);
+INSERT INTO visited_locations (visit_id, building_id) VALUES (002, 03);
+INSERT INTO visited_locations (visit_id, building_id) VALUES (003, 10);
+INSERT INTO visited_locations (visit_id, building_id) VALUES (004, 04);
+INSERT INTO visited_locations (visit_id, building_id) VALUES (005, 06);
+INSERT INTO visited_locations (visit_id, building_id) VALUES (006, 08);
+INSERT INTO visited_locations (visit_id, building_id) VALUES (007, 06);
+INSERT INTO visited_locations (visit_id, building_id) VALUES (008, 01);
+INSERT INTO visited_locations (visit_id, building_id) VALUES (009, 10);
+INSERT INTO visited_locations (visit_id, building_id) VALUES (010, 11);
+INSERT INTO visited_locations (visit_id, building_id) VALUES (011, 02);
+INSERT INTO visited_locations (visit_id, building_id) VALUES (012, 10);
+
+
+COMMIT;
+
+START TRANSACTION;
+INSERT INTO symptom_check_report (univ_id, symptom_check_date) VALUES (23, '2021-04-02 11:59:20');
+INSERT INTO symptom_check_report (univ_id, symptom_check_date) VALUES (12, '2021-04-03 23:45:01');
+INSERT INTO symptom_check_report (univ_id, symptom_check_date) VALUES (38, '2021-04-03 12:35:11');
+INSERT INTO symptom_check_report (univ_id, symptom_check_date) VALUES (12, '2021-04-05 21:00:39');
+INSERT INTO symptom_check_report (univ_id, symptom_check_date) VALUES (100, '2021-03-21 07:49:00');
+INSERT INTO symptom_check_report (univ_id, symptom_check_date) VALUES (12, '2021-04-06 06:39:20');
+INSERT INTO symptom_check_report (univ_id, symptom_check_date) VALUES (44, '2021-04-26 20:10:39');
+INSERT INTO symptom_check_report (univ_id, symptom_check_date) VALUES (44, '2021-04-27 07:34:23');
+INSERT INTO symptom_check_report (univ_id, symptom_check_date) VALUES (63, '2021-04-28 06:01:40');
+INSERT INTO symptom_check_report (univ_id, symptom_check_date) VALUES (81, '2021-02-01 09:30:39');
+INSERT INTO symptom_check_report (univ_id, symptom_check_date) VALUES (03, '2021-05-01 18:49:09');
+INSERT INTO symptom_check_report (univ_id, symptom_check_date) VALUES (02, '2021-04-02 01:30:39');
+
+COMMIT;
+
+START TRANSACTION;
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (01, 02);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (01, 03);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (02, 03);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (03, 04);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (04, 09);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (05, 10);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (05, 07);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (05, 04);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (06, 04);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (07, 05);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (08, 02);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (08, 10);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (08, 06);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (09, 08);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (09, 06);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (09, 01);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (09, 11);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (10, 01);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (11, 10);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (11, 0);
+INSERT INTO reported_symptoms (report_id, symptom_id) VALUES (12, 02);
+
+
+COMMIT;
+
+START TRANSACTION;
+INSERT INTO contact_report_people (contact_last_name, contact_first_name, contact_email) VALUES ('jameson', 'andrea', 'jand@umd.edu');
+INSERT INTO contact_report_people (contact_last_name, contact_first_name, contact_email) VALUES ('hidalgo', 'alex', 'alexhid@hotmail.com');
+INSERT INTO contact_report_people (contact_last_name, contact_first_name, contact_email) VALUES ('stuart', 'harrison', 'stu@gmail.com');
+INSERT INTO contact_report_people (contact_last_name, contact_first_name, contact_email) VALUES ('butler', 'christina', 'crb@gmail.com');
+INSERT INTO contact_report_people (contact_last_name, contact_first_name, contact_email) VALUES ('ivory', 'lillian', 'ivoryl@umd.edu');
+INSERT INTO contact_report_people (contact_last_name, contact_first_name, contact_email) VALUES ('henderson', 'vivi', 'viviannhend@yahoo.com');
+INSERT INTO contact_report_people (contact_last_name, contact_first_name, contact_email) VALUES ('jackson', 'jamal', 'jj_terp@umd.edu');
+INSERT INTO contact_report_people (contact_last_name, contact_first_name, contact_email) VALUES ('ivory', 'lillian', 'livy@hotmail.com');
+
+
+COMMIT;
+
+START TRANSACTION;
+INSERT INTO close_contact_reports (contact_person_id, univ_id, contact_date) VALUES (01, 05, '2021-05-06 10:30:00');
+INSERT INTO close_contact_reports (contact_person_id, univ_id, contact_date) VALUES (02, 75, '2021-05-06 10:30:00');
+INSERT INTO close_contact_reports (contact_person_id, univ_id, contact_date) VALUES (03, 72, '2021-05-06 10:30:00');
+INSERT INTO close_contact_reports (contact_person_id, univ_id, contact_date) VALUES (04, 05, '2021-05-06 10:30:00');
+INSERT INTO close_contact_reports (contact_person_id, univ_id, contact_date) VALUES (05, 100, '2021-05-06 10:30:00');
+INSERT INTO close_contact_reports (contact_person_id, univ_id, contact_date) VALUES (06, 20, '2021-05-06 10:30:00');
+INSERT INTO close_contact_reports (contact_person_id, univ_id, contact_date) VALUES (07, 29, '2021-05-06 10:30:00');
+INSERT INTO close_contact_reports (contact_person_id, univ_id, contact_date) VALUES (08, 30, '2021-05-06 10:30:00');
+
+
+COMMIT;
