@@ -9,5 +9,25 @@ select * from positive_tests_view
 
 
 
+CREATE VIEW fully_vaccinated_view_VIEW AS
+SELECT v.univ_id, v.vaccination_type, sq.vaccination_name, v.dose_1_date, v.dose_2_date
+from vaccination v
+left join /*i'm getting an error saying ; expected but that doesn't make sense*/
+(select v.vaccination_type
+from v.vaccination
+add column sq.vaccination_name VARCHAR(25)
+set sq.vaccination_name='moderna' where v.vaccination_type=2
+set sq.vaccination_name='pfizer' where v.vaccination_type=1
+set sq.vaccination_name='j&j' where v.vaccination_type=3) sq
+on v.vaccination_type = sq.vaccination_name
+where v.vaccination_type is not null
+and v.dose_2_date is not null or v.vaccination_type = 3
+;
+
+SELECT * FROM fully_vaccinated_VIEW;
+
+
+
+
 
 
