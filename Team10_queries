@@ -1,1 +1,39 @@
-/*****/
+DROP VIEW IF EXISTS person_view;
+CREATE VIEW PERSON_VIEW AS
+SELECT univ_id, affiliation, training_status, training_completion_date DATETIME
+FROM PERSON;
+
+SELECT * FROM PERSON_VIEW;
+
+DROP VIEW IF EXISTS vaccination_view;
+CREATE VIEW VACCINATION_VIEW AS
+SELECT vaccinated, vaccination_type, dose_1_date, dose_2_date
+FROM  VACCINATION;
+
+SELECT * FROM VACCINATION_VIEW;
+/*add univ_id of those who reported?*/
+
+DROP VIEW IF EXISTS reported_symptoms_VIEW;
+CREATE VIEW reported_symptoms_VIEW AS
+SELECT report_id, symptom_id
+FROM reported_symptoms;
+
+SELECT * FROM reported_symptoms_VIEW;
+
+
+CREATE VIEW TESTING_VIEW AS
+SELECT testing_id, univ_id, test_result, test_date
+FROM TESTING;
+
+SELECT * FROM TESTING_VIEW;
+
+
+CREATE VIEW visited_locations_view AS
+SELECT visit_id, building_id
+FROM visited_locations;
+/*add people here too*/
+
+SELECT*FROM visited_locations_VIEW;
+
+
+
