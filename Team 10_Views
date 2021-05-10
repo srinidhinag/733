@@ -1,32 +1,55 @@
 CREATE VIEW PERSON_VIEW AS
-SELECT name, age, affiliation, training status, DATETIME,
+SELECT name, age, affiliation, training status, DATETIME
 FROM  PERSON;
-
 SELECT * FROM PERSON_VIEW;
 
 
 CREATE VIEW VACCINATION_VIEW AS
-SELECT vaccinated, vaccinated type, dose 1 DATETIME, dose 2 DATETIME, 
+SELECT vaccinated, vaccinated type, dose 1 DATETIME, dose 2 DATETIME
 FROM  VACCINATED;
-
 SELECT * FROM VACCINATED_VIEW;
 
 CREATE VIEW SYMPTOMS_VIEW AS
-SELECT symptom_name,
+SELECT symptom_name
 FROM SYMPTOMS
-
 SELECT * FROM SYMPTOMS_VIEW;
 
 
 CREATE VIEW TESTING_VIEW AS
-SELECT testing_id, univ_id, test_result,test_date,
+SELECT testing_id, univ_id, test_result,test_date
 FROM TESTING
-
 SELECT * FROM TESTING_VIEW;
 
 
 CREATE VIEW BUILDINGS_VIEW AS
-SELECT building_id, building_name,
-FROM BUILDINGS
-
+SELECT building_id, building_name
+FROM BUILDINGS;
 SELECT*FROM BUILDINGS_VIEW;
+
+/*working, but very simple. Want to join it with peron.univ_id so we can see who obtained the positive tests. Order by most recent test date.*/
+DROP VIEW IF EXISTS positive_tests_view;
+create view positive_tests_view as
+select count(test_result) as num_pos_test
+from testing
+where test_result =1
+;
+select * from positive_tests_view
+
+
+/*this one is not working yet*/
+CREATE VIEW fully_vaccinated_view_VIEW AS
+SELECT v.univ_id, v.vaccination_type, sq.vaccination_name, v.dose_1_date, v.dose_2_date
+from vaccination v
+left join /*i'm getting an error saying ; expected but that doesn't make sense*/
+(select v.vaccination_type
+from v.vaccination
+add column sq.vaccination_name VARCHAR(25)
+set sq.vaccination_name='moderna' where v.vaccination_type=2
+set sq.vaccination_name='pfizer' where v.vaccination_type=1
+set sq.vaccination_name='j&j' where v.vaccination_type=3) sq
+on v.vaccination_type = sq.vaccination_name
+where v.vaccination_type is not null
+and v.dose_2_date is not null or v.vaccination_type = 3
+;
+SELECT * FROM fully_vaccinated_VIEW;
+
