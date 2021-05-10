@@ -1,3 +1,8 @@
+/*create view that returns the names and ids of individuals who have not been fully*/ vaccinated - see fully_vaccinated_view*/
+/*make positive_tests_count_view more complex - e.g include names of individuals and dates of positive tests, order by test date*/
+/*create view determining compliance - sort individuals who are in compliance by ensuring that they hve not had a positive test in 14 days, reported any symptoms in 14 days, adn completed the training*/
+/*create view to see if any reportd close contacts are umd individuals that have visited campus*/
+
 CREATE VIEW PERSON_VIEW AS
 SELECT name, age, affiliation, training status, DATETIME.
 FROM  PERSON;
@@ -51,3 +56,11 @@ order by univ_id
 ;
 SELECT * FROM fully_vaccinated_VIEW;
 
+/*fully working but very simple*/
+DROP VIEW IF EXISTS positive_tests_count_view;
+create view positive_tests_count_view as
+select count(test_result) as num_pos_test
+from testing
+where test_result =1
+;
+select * from positive_tests_count_view;
