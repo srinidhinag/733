@@ -34,6 +34,9 @@ SELECT*FROM BUILDINGS_VIEW;
 
 /*fully working*/
 /*fully_vaccinated_view*/
+/*alter table vaccination
+drop column vaccination_name;*/
+
 alter table vaccination
 add column vaccination_name VARCHAR(15) after vaccination_type;
 
