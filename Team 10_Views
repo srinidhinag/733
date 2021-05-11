@@ -61,13 +61,14 @@ order by univ_id
 SELECT * FROM fully_vaccinated_VIEW;
 
 
-/*working, but very simple. Want to join it with peron.univ_id so we can see who obtained the positive tests. Order by most recent test date.*/
+/*positive_tests_view*/
 DROP VIEW IF EXISTS positive_tests_view;
 create view positive_tests_view as
-select count(test_result) as num_positive_test
-from testing
-INNER JOIN person.univ_id
+select t.univ_id, concat(p.last_name,', ', p.first_name) as full_name , test_date
+from testing t
+inner join person p
+on t.univ_id = p.univ_id
 where test_result =1
+order by test_date
 ;
 select * from positive_tests_view
-
