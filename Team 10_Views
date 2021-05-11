@@ -33,9 +33,21 @@ SELECT*FROM BUILDINGS_VIEW;
 
 
 /*fully working*/
+alter table vaccination
+add column vaccination_name VARCHAR(15) after vaccination_type;
+
+update vaccination
+set vaccination_name = 'j&j' where vaccination_type = 3;
+
+update vaccination
+set vaccination_name = 'moderna' where vaccination_type = 2;
+
+update vaccination
+set vaccination_name = 'pfizer' where vaccination_type = 3;
+
 DROP VIEW IF EXISTS fully_vaccinated_view;
 CREATE VIEW fully_vaccinated_view AS
-SELECT v.univ_id, sq.full_name, v.vaccination_type,  v.dose_1_date, v.dose_2_date
+SELECT v.univ_id, sq.full_name, v.vaccination_name, v.dose_1_date, v.dose_2_date
 from vaccination v
 inner join
 (select p.univ_id, concat(last_name,', ', first_name) as full_name 
@@ -46,6 +58,7 @@ and v.dose_2_date is not null or v.vaccination_type = 3
 order by univ_id
 ;
 SELECT * FROM fully_vaccinated_VIEW;
+
 
 /*fully working but very simple*/
 DROP VIEW IF EXISTS positive_tests_count_view;
