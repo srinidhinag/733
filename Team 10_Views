@@ -33,6 +33,7 @@ SELECT*FROM BUILDINGS_VIEW;
 
 
 /*fully working*/
+/*fully_vaccinated_view*/
 alter table vaccination
 add column vaccination_name VARCHAR(15) after vaccination_type;
 
@@ -60,15 +61,6 @@ order by univ_id
 SELECT * FROM fully_vaccinated_VIEW;
 
 
-/*fully working but very simple*/
-DROP VIEW IF EXISTS positive_tests_count_view;
-create view positive_tests_count_view as
-select count(test_result) as num_pos_test
-from testing
-where test_result =1
-;
-select * from positive_tests_count_view;
-
 /*working, but very simple. Want to join it with peron.univ_id so we can see who obtained the positive tests. Order by most recent test date.*/
 DROP VIEW IF EXISTS positive_tests_view;
 create view positive_tests_view as
@@ -79,4 +71,3 @@ where test_result =1
 ;
 select * from positive_tests_view
 
-/*these last two are pretty much the same thing*/
