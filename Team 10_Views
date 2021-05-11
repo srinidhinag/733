@@ -74,6 +74,7 @@ DROP VIEW IF EXISTS positive_tests_view;
 create view positive_tests_view as
 select count(test_result) as num_positive_test
 from testing
+INNER JOIN person.univ_id
 where test_result =1
 ;
 select * from positive_tests_view
