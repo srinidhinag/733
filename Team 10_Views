@@ -34,6 +34,7 @@ SELECT*FROM BUILDINGS_VIEW;
 
 /*fully working*/
 /*fully_vaccinated_view*/
+
 /*alter table vaccination
 drop column vaccination_name;*/
 
@@ -65,6 +66,7 @@ SELECT * FROM fully_vaccinated_VIEW;
 
 
 /*positive_tests_view*/
+/*fully working*/
 DROP VIEW IF EXISTS positive_tests_view;
 create view positive_tests_view as
 select t.univ_id, concat(p.last_name,', ', p.first_name) as full_name , test_date
@@ -78,6 +80,7 @@ select * from positive_tests_view
 
 
 /*recent_pos_tests_count_view*/
+/*fully working*/
 DROP VIEW IF EXISTS recent_pos_tests_count_view;
 create view recent_pos_tests_count_view as
 select count(t.test_result) as num_pos_test
@@ -87,3 +90,25 @@ on t.univ_id = p.univ_id
 where test_result =1 and test_date > '2021-04-15 05:00:00'
 ;
 select * from recent_pos_tests_count_view;
+
+/*not_full_vacc_count_view*/
+/*fully working*/
+DROP VIEW IF EXISTS not_full_vacc_count_view;
+CREATE VIEW not_full_vacc_count_view as
+select count(v.univ_id) as not_full_vacc_count
+from vaccination v
+where (v.dose_2_date is null and v.vaccination_type < 3) or v.vaccination_type != 3
+;
+select * from not_full_vacc_count_view;
+
+/*not_full_vacc_percent_view*/
+/*fully working*/
+drop view if exists not_full_vacc_percent_view;
+create view not_full_vacc_percent_view as
+select (n.not_full_vacc_count/count(p.univ_id)) as not_full_vacc_percent
+from not_full_vacc_count_view n 
+left join person p
+on n.not_full_vacc_count = p.univ_id
+;
+
+select * from not_full_vacc_percent_view;
