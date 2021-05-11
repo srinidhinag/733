@@ -72,3 +72,15 @@ where test_result =1
 order by test_date
 ;
 select * from positive_tests_view
+
+
+/*recent_pos_tests_count_view*/
+DROP VIEW IF EXISTS recent_pos_tests_count_view;
+create view recent_pos_tests_count_view as
+select count(t.test_result) as num_pos_test
+from testing t
+inner join person p
+on t.univ_id = p.univ_id
+where test_result =1 and test_date > '2021-04-15 05:00:00'
+;
+select * from recent_pos_tests_count_view;
