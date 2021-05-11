@@ -31,15 +31,6 @@ SELECT building_id, building_name,
 FROM BUILDINGS;
 SELECT*FROM BUILDINGS_VIEW;
 
-/*working, but very simple. Want to join it with peron.univ_id so we can see who obtained the positive tests. Order by most recent test date.*/
-DROP VIEW IF EXISTS positive_tests_view;
-create view positive_tests_view as
-select count(test_result) as num_positive_test
-from testing
-where test_result =1
-;
-select * from positive_tests_view
-
 
 /*fully working*/
 DROP VIEW IF EXISTS fully_vaccinated_view;
@@ -64,3 +55,14 @@ from testing
 where test_result =1
 ;
 select * from positive_tests_count_view;
+
+/*working, but very simple. Want to join it with peron.univ_id so we can see who obtained the positive tests. Order by most recent test date.*/
+DROP VIEW IF EXISTS positive_tests_view;
+create view positive_tests_view as
+select count(test_result) as num_positive_test
+from testing
+where test_result =1
+;
+select * from positive_tests_view
+
+/*these last two are pretty much the same thing*/
