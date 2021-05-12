@@ -168,4 +168,21 @@ and p.training_status = 1
 ;
 select * from in_compliance_list_view;
 
+/*fully working*/
+/*non_compliant_visits_view*/
+drop view if exists non_compliant_visits_view;
+create view non_compliant_visits_view as
+select p.univ_id, concat(p.last_name, ', ', p.first_name) as full_name, v.visit_date
+from visit_status v
+inner join person p 
+on v.univ_id = p.univ_id
+inner join testing t
+on t.univ_id = v.univ_id
+where visited_campus is not null
+and 
+(t.test_result != 0 or
+t.test_date < '2021-04-15 00:00:00'
+or p.training_status != 1)
+order by visit_date desc;
+select * from non_compliant_visits_view;
 
