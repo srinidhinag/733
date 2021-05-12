@@ -31,6 +31,20 @@ SELECT building_id, building_name,
 FROM BUILDINGS;
 SELECT*FROM BUILDINGS_VIEW;
 
+/*fully working*/
+/*non_compliant_list_view*/
+drop view if exists non_compliant_list_view;
+create view non_compliant_list_view as
+select p.univ_id, concat(p.last_name, ', ', p.first_name) as full_name, p.affiliation_name
+from testing t
+inner join person p
+on t.univ_id = p.univ_id
+where t.test_result != 0 or
+t.test_date < '2021-04-15 00:00:00'
+or p.training_status != 1
+;
+select * from non_compliant_list_view;
+
 
 /*fully working*/
 /*fully_vaccinated_view*/
