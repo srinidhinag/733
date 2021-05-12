@@ -127,3 +127,31 @@ where c.contact_date > '2021-04-15 00:00:00'
 ;
 select * from recent_close_contacts_view;
 
+
+/*fully working*/
+/*in_compliance_list_view*/
+/*alter table person
+drop column affiliation_name;
+
+alter table person
+add column affiliation_name varchar(10) after affiliation;*/
+
+update person
+set affiliation_name = 'student' where affiliation = 0;
+
+update person
+set affiliation_name = 'faculty' where affiliation = 1;
+
+drop view if exists in_compliance_list_view;
+create view in_compliance_list_view as
+select p.univ_id, concat(p.last_name, ', ', p.first_name) as full_name, p.affiliation_name
+from testing t
+inner join person p
+on t.univ_id = p.univ_id
+where t.test_result = 0 and
+t.test_date > '2021-04-15 00:00:00'
+and p.training_status = 1
+;
+select * from in_compliance_list_view;
+
+
