@@ -1,5 +1,5 @@
 /*create view that returns the names and ids of individuals who have not been fully*/ vaccinated - see fully_vaccinated_view*/
-/*make positive_tests_count_view more complex - e.g include names of individuals and dates of positive tests, order by test date*/
+/*make positive_tests_count_view more complex - e.g include names of individuals and dates of positive tests, order by test date desc*/
 /*create view determining compliance - sort individuals who are in compliance by ensuring that they hve not had a positive test in 14 days, reported any symptoms in 14 days, adn completed the training*/
 /*create view to see if any reportd close contacts are umd individuals that have visited campus*/
 
