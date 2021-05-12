@@ -225,5 +225,26 @@ and
 t.test_date < '2021-04-15 00:00:00'
 or p.training_status != 1)
 order by visit_date desc;
-select * from non_compliant_visits_view;
+select * from non_compliant_visits_view;\
+
+
+
+
+
+/*fully working*/
+/*visited_buildings_view*/
+/*returns list of all visited buildings and corresponding dates*/
+drop view if exists visited_buildings_view;
+create view visited_buildings_view as
+select s.univ_id, s.visit_date, l.visit_id, l.building_id, b.building_name
+from visit_status s
+inner join
+visited_locations l
+on s.visit_id = l.visit_id
+inner join
+buildings b
+on b.building_id = l.building_id
+order by s.visit_date desc
+;
+select * from visited_buildings_view;
 
