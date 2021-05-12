@@ -1,8 +1,3 @@
-/*create view that returns the names and ids of individuals who have not been fully*/ vaccinated - see fully_vaccinated_view*/
-/*make positive_tests_count_view more complex - e.g include names of individuals and dates of positive tests, order by test date desc*/
-/*create view determining compliance - sort individuals who are in compliance by ensuring that they hve not had a positive test in 14 days, reported any symptoms in 14 days, adn completed the training*/
-/*create view to see if any reportd close contacts are umd individuals that have visited campus*/
-
 CREATE VIEW PERSON_VIEW AS
 SELECT name, age, affiliation, training status, DATETIME.
 FROM  PERSON;
@@ -31,23 +26,13 @@ SELECT building_id, building_name,
 FROM BUILDINGS;
 SELECT*FROM BUILDINGS_VIEW;
 
-/*fully working*/
-/*non_compliant_list_view*/
-drop view if exists non_compliant_list_view;
-create view non_compliant_list_view as
-select p.univ_id, concat(p.last_name, ', ', p.first_name) as full_name, p.affiliation_name
-from testing t
-inner join person p
-on t.univ_id = p.univ_id
-where t.test_result != 0 or
-t.test_date < '2021-04-15 00:00:00'
-or p.training_status != 1
-;
-select * from non_compliant_list_view;
+
+
 
 
 /*fully working*/
 /*fully_vaccinated_view*/
+/*returns list of all fully vaccinated individuals*/
 
 /*alter table vaccination
 drop column vaccination_name;*/
@@ -79,8 +64,12 @@ order by univ_id
 SELECT * FROM fully_vaccinated_VIEW;
 
 
+
+
+
 /*positive_tests_view*/
 /*fully working*/
+/*returns list of all positive tests from most reent to least*/
 DROP VIEW IF EXISTS positive_tests_view;
 create view positive_tests_view as
 select t.univ_id, concat(p.last_name,', ', p.first_name) as full_name , test_date
@@ -88,13 +77,17 @@ from testing t
 inner join person p
 on t.univ_id = p.univ_id
 where test_result =1
-order by test_date
+order by test_date desc
 ;
 select * from positive_tests_view
 
 
+
+
+
 /*recent_pos_tests_count_view*/
 /*fully working*/
+/*returns number of recent positive tests*/
 DROP VIEW IF EXISTS recent_pos_tests_count_view;
 create view recent_pos_tests_count_view as
 select count(t.test_result) as num_pos_test
@@ -105,8 +98,14 @@ where test_result =1 and test_date > '2021-04-15 05:00:00'
 ;
 select * from recent_pos_tests_count_view;
 
+
+
+
+
+
 /*not_full_vacc_count_view*/
 /*fully working*/
+/*returns number of people not vaccinated or not fully vaccinated*/
 DROP VIEW IF EXISTS not_full_vacc_count_view;
 CREATE VIEW not_full_vacc_count_view as
 select count(v.univ_id) as not_full_vacc_count
@@ -115,8 +114,14 @@ where (v.dose_2_date is null and v.vaccination_type < 3) or v.vaccination_type !
 ;
 select * from not_full_vacc_count_view;
 
+
+
+
+
+
 /*not_full_vacc_percent_view*/
 /*fully working*/
+/*returns percentage of people not fully vaccinated*/
 drop view if exists not_full_vacc_percent_view;
 create view not_full_vacc_percent_view as
 select (n.not_full_vacc_count/count(p.univ_id)) as not_full_vacc_percent
@@ -127,8 +132,14 @@ on n.not_full_vacc_count = p.univ_id
 
 select * from not_full_vacc_percent_view;
 
+
+
+
+
+
 /*fully working*/
 /*recent_close_contacts_view*/
+/*returns list of all reported close contacts*/
 drop view if exists recent_close_contacts_view;
 create view recent_close_contacts_view as
 select c.contact_person_id, c.univ_id as reporter_univ_id, concat(p.last_name, ', ', p.first_name) as reporter_full_name,  concat(r.contact_last_name, ', ', r.contact_first_name) as contact_full_name, r.contact_email
@@ -142,8 +153,14 @@ where c.contact_date > '2021-04-15 00:00:00'
 select * from recent_close_contacts_view;
 
 
+
+
+
+
 /*fully working*/
 /*in_compliance_list_view*/
+/*returns list of all individuals in compliance with protocol*/
+
 /*alter table person
 drop column affiliation_name;
 
@@ -168,8 +185,32 @@ and p.training_status = 1
 ;
 select * from in_compliance_list_view;
 
+
+
+
+
+/*fully working*/
+/*non_compliant_list_view*/
+/*returns list of currently non compliant individuals*/
+drop view if exists non_compliant_list_view;
+create view non_compliant_list_view as
+select p.univ_id, concat(p.last_name, ', ', p.first_name) as full_name, p.affiliation_name
+from testing t
+inner join person p
+on t.univ_id = p.univ_id
+where t.test_result != 0 or
+t.test_date < '2021-04-15 00:00:00'
+or p.training_status != 1
+;
+select * from non_compliant_list_view;
+
+
+
+
+
 /*fully working*/
 /*non_compliant_visits_view*/
+/*returns list of people who visited campus when not in compliance*/
 drop view if exists non_compliant_visits_view;
 create view non_compliant_visits_view as
 select p.univ_id, concat(p.last_name, ', ', p.first_name) as full_name, v.visit_date
